@@ -8,5 +8,4 @@ function validateForm() {
 
     if(!moment(fdate, "MM-DD-YYYY").isValid())
         alert('Date must be MM-DD-YYYY format');
-
 }
