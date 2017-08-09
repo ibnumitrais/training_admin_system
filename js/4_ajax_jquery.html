@@ -1,0 +1,21 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+<body>
+<button>Klik untuk get data dari 4_ajax_jquery.html</button>
+<p id="hello">Data belum diambil</p>
+
+<script>
+$("button").click(function(){
+    $.ajax({url: "4_ajax_data.txt", success: function(result){
+        $("#hello").html(result);
+    }});
+});
+</script>
+
+
+</body>
+</html>
