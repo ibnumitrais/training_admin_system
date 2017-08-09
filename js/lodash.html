@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>Utilise lodash library</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.1.0/lodash.min.js"></script>
+
+</head>
+<body>
+
+<p id="hello">Session data</p>
+
+<script type="text/javascript">
+ var alph = ["a","b","c","d","e"];
+    console.log("First element in alph Array: ", _.first(alph));
+    console.log("Last element in alph Array: ", _.last(alph));
+    var studentArray=[
+        {name:"f",grade:34},
+        {name:"g",grade:31},
+        {name:"h",grade:20},
+        {name:"i",grade:39},
+        {name:"j",grade:23}
+    ];
+    var chainStudentArray= _.chain(studentArray);
+    console.log("Chain: student with lowest grade: ",
+            chainStudentArray.sortBy('grade').first().value().name);
+
+</script>
+</body>
+</html>
