@@ -1,0 +1,25 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+<body>
+<button id="asda" disabled="true">Loading and still disabled</button>
+<script>
+
+
+
+       $.ajax({url: "4_ajax_data.txt",  beforeSend: function(){
+       
+    }, success: function(result){
+  setTimeout(function(){ $("#asda").attr("disabled", false); $("#asda").html(result)}, 1000);
+        
+    }});
+
+
+</script>
+
+
+</body>
+</html>
