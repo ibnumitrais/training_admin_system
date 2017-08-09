@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>Promise implementation</title>
+<script type="text/javascript">
+	var  promiseReason = true;
+
+// Promise
+var promiseGoal = new Promise(
+    function (resolve, reject) {
+        if (promiseReason) {
+            var promiseItem = {
+                a: 'Promise',
+                b: 'fulfilled'
+            };
+            resolve(promiseItem); // fulfilled
+        } else {
+            var reason = new Error('promise reason not fulfilled');
+            reject(reason); // reject
+        }
+
+    }
+);
+
+var requestPromise = function () {
+    promiseGoal
+        .then(function (fulfilled) {
+            console.log(fulfilled);
+      
+        })
+        .catch(function (error) {
+            console.log(error.message);
+        });
+};
+
+requestPromise();
+
+
+</script>
+</head>
+<body>
+Promise goal is true<br>
+See the console for the output. (change the promise goal to false if you want the promise to be rejected)
+</body>
+</html>
