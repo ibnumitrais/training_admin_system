@@ -3,9 +3,20 @@ package test;
 
 import java.io.IOException;
 
-import testPackage.test;
+import testPackage.TestExample;
 
-public class main {
+/* Version control specific information
+*
+* Main Class
+*
+* Copyright notice
+*
+* Team Thor 
+* 
+* 8-15-2017
+*/
+
+public class Main {
     
 	public static void main(String[] args) throws IOException {
 		
@@ -32,7 +43,7 @@ public class main {
 		System.out.println(a.getCourse());
 		
 		//package
-		test x = new test();
+		TestExample x = new TestExample();
 	}
 
 }

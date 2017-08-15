@@ -1,8 +1,9 @@
 package test;
 
 public class Student {
-int grade;
-String name;
+private int grade;
+
+private String name;
 
 public Student(int grade, String name)
 {
