@@ -1,0 +1,24 @@
+{
+  "name": "kipa-project-trainingsystem",
+  "version": "1.0.0",
+  "description": "Training for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibnumitrais/training_admin_system.git"
+  },
+  "author": "Thor Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ibnumitrais/training_admin_system/issues"
+  },
+  "homepage": "https://github.com/ibnumitrais/training_admin_system#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
