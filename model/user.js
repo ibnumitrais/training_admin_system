@@ -13,64 +13,39 @@ var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES; 
 
 module.exports = {
-    getRecords: function(res) {
+    deleteRecord: function (callback, userid) {
         var connection = new Connection(config);
-        
         connection.on('connect', function(err) {
-            request = new Request("SELECT * FROM dbo.Users;", function(err, rowCount, rows) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    var rowsResult = new Array();
-                    rows.forEach(function(columns) {
-                        var row = {};
-                        columns.forEach(function(column) {
-                            row[column.metadata.colName] = column.value;
-                        });
-                        rowsResult.push(row);
-                    });
-                    res.end(JSON.stringify(rowsResult));
-                }
+            request = new Request("DELETE FROM dbo.Users WHERE user_id=@UserID;", function(err) {
+                if (err) callback(-1, err);  
+                else callback(1, 'success');
             });
-
+            request.addParameter('UserID', TYPES.Int, userid);  
             connection.execSql(request);
-        })
+        });
     },
-    getActiveRecords: function(res) {
+    storeRecord: function (callback, data) {
         var connection = new Connection(config);
-        
         connection.on('connect', function(err) {
-            request = new Request("SELECT * FROM dbo.Users;", function(err, rowCount, rows) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    var rowsResult = new Array();
-                    rows.forEach(function(columns) {
-                        var row = {};
-                        columns.forEach(function(column) {
-                            row[column.metadata.colName] = column.value;
-                        });
-                        rowsResult.push(row);
-                    });
-
-                    var active = rowsResult.filter(function(item) {
-                        return item.user_status === "active    ";
-                    });
-                
-                    res.end(JSON.stringify(active));
-                }
+            request = new Request("INSERT dbo.Users (user_full_name, user_email, user_account_name, user_status, created_at, updated_at, deleted_at, grade_id, division_id, office_id) "+ 
+                                    "VALUES (@Name, @Email, @UserAccount, 'not active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '', 2, 1, 1);", function(err) {
+                if (err) callback(-1, err);  
+                else callback(1, 'success');
             });
-
+            request.addParameter('Name', TYPES.NVarChar, data.fullname);  
+            request.addParameter('UserAccount', TYPES.NVarChar , 'mitrais/'+data.username);
+            request.addParameter('Email', TYPES.NVarChar , data.email);
             connection.execSql(request);
-        })
+        });
     },
-    getInactiveRecords: function(res) {
+    getRecords: function(callback, condition) {
         var connection = new Connection(config);
         
         connection.on('connect', function(err) {
-            request = new Request("SELECT * FROM dbo.Users;", function(err, rowCount, rows) {
+            request = new Request("SELECT * FROM dbo.Users "+condition+";", function(err, rowCount, rows) {
                 if (err) {
                     console.log(err);
+                    callback(-1, err);
                 } else {
                     var rowsResult = new Array();
                     rows.forEach(function(columns) {
@@ -80,16 +55,11 @@ module.exports = {
                         });
                         rowsResult.push(row);
                     });
-
-                    var active = rowsResult.filter(function(item) {
-                        return item.user_status === "not active";
-                    });
-                
-                    res.end(JSON.stringify(active));
+                    callback(1, rowsResult);
                 }
             });
 
             connection.execSql(request);
-        })
-    }
+        });
+    },
 };

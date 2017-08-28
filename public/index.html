@@ -5,25 +5,81 @@
     <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no"/>
     <meta charset="utf-8">
 
-    <title>Skier Dictionary</title>
-
-    <link rel="stylesheet" href="/css/style.css"/>
+    <title>Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
 
 </head>
 <body>
-
-    <h1>Skier Dictionary</h1>
-    <dl></dl>
-    <p>Dictionary Empty</p>
-
-    <form>
-        <input type="text" id="term" name="term" placeholder="new term..." required />
-        <input type="Text" name="defined" id="defined" placeholder="new definition..." required />
-        <button>Add Term</button>
-    </form>
-
+    <div class="ui top fixed menu">
+        <div class="item">
+            <h2 class="ui header">
+                <i class="users icon"></i>
+                <div class="content">
+                    Thor Team
+                    <div class="sub header">NodeJS Achievement</div>
+                </div>
+            </h2>
+        </div>
+    </div>
+    <div class="ui container" style="padding-top: 7em; padding-bottom: 3em">
+        <select class="ui dropdown default filter">
+            <option value="active    ">Active</option>
+            <option value="not active" selected>Not Active</option>
+        </select>
+        <div class="ui segment">
+            <form class="ui form addUser">
+                <div class="equal width fields">
+                    <div class="field">
+                        <label>Username</label>
+                        <input type="text" name="username" placeholder="Username..." required>
+                    </div>
+                    <div class="field">
+                        <label>Full Name</label>
+                        <input type="text" name="fullname" placeholder="Full Name..." required>
+                    </div>
+                    <div class="field">
+                        <label>Email</label>
+                        <input type="text" name="email" placeholder="Email..." required>
+                    </div>
+                </div>
+                <button class="ui right labeled icon tiny green button">
+                    <i class="save icon"></i>
+                    Simpan
+                </button>
+            </form>
+        </div>
+        <div class="dimmable">
+            <div class="ui inverted dimmer usertable">
+                <div class="ui text loader">Loading</div>
+            </div>
+            <table class="ui celled striped table">
+                
+                <thead>
+                    <tr>
+                        <th>Account Name</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="ui mini modal delete" id="delete-user">
+        <div class="header"></div>
+        <div class="content">
+            
+        </div>
+        <div class="actions">
+            <div class="ui approve red button">Yes!</div>
+            <div class="ui cancel button">No</div>
+        </div>
+    </div>
     <script src="/js/jquery.min.js"></script>
-    <script src="/js/dictionary.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+    <script src="/js/user.js"></script>
 
 </body>
 </html>
