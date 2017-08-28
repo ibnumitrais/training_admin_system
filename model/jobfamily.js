@@ -23,9 +23,9 @@ module.exports = {
                 } else {
                     var rowsResult = new Array();
                     rows.forEach(function(columns) {
-                        var row = new Array();
+                        var row = {};
                         columns.forEach(function(column) {
-                            row[column.metadata.colName] = column.value;  
+                            row[column.metadata.colName] = column.value;
                         });
                         rowsResult.push(row);
                     });
