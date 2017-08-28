@@ -12,12 +12,16 @@
     "url": "git+https://github.com/ibnumitrais/training_admin_system.git"
   },
   "author": "Thor Team",
-  "license": "ISC",
+  "license": "Mitrais",
   "bugs": {
     "url": "https://github.com/ibnumitrais/training_admin_system/issues"
   },
   "homepage": "https://github.com/ibnumitrais/training_admin_system#readme",
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "cors": "^2.7.1",
+    "express": "^4.13.3"
+  },
   "devDependencies": {
     "nodemon": "^1.11.0"
   }
