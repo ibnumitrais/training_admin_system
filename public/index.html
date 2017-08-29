@@ -7,6 +7,7 @@
 
     <title>Users</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.semanticui.min.css">
 
 </head>
 <body>
@@ -22,10 +23,6 @@
         </div>
     </div>
     <div class="ui container" style="padding-top: 7em; padding-bottom: 3em">
-        <select class="ui dropdown default filter">
-            <option value="active    ">Active</option>
-            <option value="not active" selected>Not Active</option>
-        </select>
         <div class="ui segment">
             <form class="ui form addUser">
                 <div class="equal width fields">
@@ -52,13 +49,14 @@
             <div class="ui inverted dimmer usertable">
                 <div class="ui text loader">Loading</div>
             </div>
-            <table class="ui celled striped table">
+            <table class="ui celled striped table usertable">
                 
                 <thead>
                     <tr>
                         <th>Account Name</th>
                         <th>Full Name</th>
                         <th>Email</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -78,6 +76,8 @@
         </div>
     </div>
     <script src="/js/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.semanticui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script src="/js/user.js"></script>
 

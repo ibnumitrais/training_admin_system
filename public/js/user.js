@@ -1,37 +1,39 @@
 $(document).ready(function () {
-
-    $('.dropdown.default').dropdown();
-
-    $('.dropdown.filter').dropdown({
-        onChange: function(value, text, $choice) {
-            $.get('/user-api',{ filter: value}, printTerms);
-        },
-    });
-
-    $.get('/user-api',{ filter: $('.dropdown.filter').dropdown('get value')}, printTerms);
-
+    
+    var userTable = userTableInit();
+    
+    function updateUserTable(data) {
+        userTable.ajax.reload( null, false );
+        $(".dimmer.usertable").removeClass('active');
+    }
     $('form.addUser').submit(function (e) {
         $(".dimmer.usertable").addClass('active');
         e.preventDefault();
-        $.post('/user-api', {filter: $('.dropdown.filter').dropdown('get value'), username: $('input[name="username"]').val(), fullname: $('input[name="fullname"]').val(), email: $('input[name="email"]').val()}, printTerms);
+        $.post('/user-api', {username: $('input[name="username"]').val(), fullname: $('input[name="fullname"]').val(), email: $('input[name="email"]').val()}, updateUserTable);
         this.reset();
     });
 
 });
-    
-function printTerms(terms) {
-    $('table>tbody').empty();
-    
-    $.each(terms, function () {
-        var tr = $('<tr>').appendTo('table>tbody');
-        $('<td>').text(this.user_account_name).appendTo(tr);
-        $('<td>').text(this.user_full_name).appendTo(tr);
-        $('<td>').text(this.user_email).appendTo(tr);
-        $('<td><div class="ui icon tiny buttons">\
-            <button data-userid="'+this.user_id+'" data-header="Delete user #'+this.user_id+'" data-modalid="delete-user" data-content="Apakah Anda yakin ingin menghapus User dengan nama '+this.user_full_name+'?" onclick="remove(this)" class="ui red button"><i class="trash icon"></i></button>\
-        </div>').appendTo(tr);
-    });
-    $(".dimmer.usertable").removeClass('active');
+
+function userTableInit() {
+    var table = $('table.usertable').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        'ajax': {
+            'url': "/user-api",
+            'data': function(d){
+                return d;
+            }
+        },
+        'orderMulti': false,
+        'columns': [
+            {'data' : 'user_account_name'},
+            {'data' : 'user_full_name'},
+            {'data' : 'user_email'},
+            {'data' : 'user_status'},
+        ]
+    } );
+    return table;
 }
 
 function remove(caller) {
