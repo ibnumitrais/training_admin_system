@@ -1,8 +1,4 @@
-// $(document).ready(function () {
-    
-    
 
-// });
 
 var userTable = userTableInit();
 
@@ -40,9 +36,9 @@ function userTableInit() {
             {
                 "targets": 4,
                 "createdCell": function(td, cellData, rowData, row, col) {
-                   $(td).prepend(
-                     '<button data-userid="'+rowData.user_id+'" data-header="Delete user #'+rowData.user_id+'" data-modalid="delete-user" data-content="Apakah Anda yakin ingin menghapus User dengan nama '+rowData.user_full_name+'?" onclick="remove(this)" class="ui red tiny icon button"><i class="trash icon"></i></button>'
-                   );
+                $(td).prepend(
+                    '<button data-userid="'+rowData.user_id+'" data-header="Delete user #'+rowData.user_id+'" data-modalid="delete-user" data-content="Apakah Anda yakin ingin menghapus User dengan nama '+rowData.user_full_name+'?" onclick="remove(this)" class="ui red tiny icon button"><i class="trash icon"></i></button>'
+                );
                 },
                 "orderable": false,
             }
@@ -77,4 +73,3 @@ function remove(caller) {
         }
     }).modal('show');
 }
-    

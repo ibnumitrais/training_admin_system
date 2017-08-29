@@ -13,28 +13,28 @@ var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES; 
 
 module.exports = {
-    deleteRecord: function (callback, userid) {
+    deleteRecord: function (callback, id) {
         var connection = new Connection(config);
         connection.on('connect', function(err) {
-            request = new Request("DELETE FROM dbo.Users WHERE user_id=@UserID;", function(err) {
+            request = new Request("DELETE FROM dbo.Grade WHERE grade_id=@id;", function(err) {
                 if (err) callback(-1, err);  
                 else callback(1, 'success');
             });
-            request.addParameter('UserID', TYPES.Int, userid);  
+            request.addParameter('id', TYPES.Int, id);  
             connection.execSql(request);
         });
     },
     storeRecord: function (callback, data) {
         var connection = new Connection(config);
         connection.on('connect', function(err) {
-            request = new Request("INSERT dbo.Users (user_full_name, user_email, user_account_name, user_status, created_at, updated_at, deleted_at, grade_id, division_id, office_id) "+ 
-                                    "VALUES (@Name, @Email, @UserAccount, 'not active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '', 2, 1, 1);", function(err) {
+            request = new Request("INSERT dbo.Grade (grade_code, grade_name, grade_description) "+ 
+                                    "VALUES (@grade_code, @grade_name, @grade_description);", function(err) {
                 if (err) callback(-1, err);  
                 else callback(1, 'success');
             });
-            request.addParameter('Name', TYPES.NVarChar, data.fullname);  
-            request.addParameter('UserAccount', TYPES.NVarChar , 'mitrais/'+data.username);
-            request.addParameter('Email', TYPES.NVarChar , data.email);
+            request.addParameter('grade_code', TYPES.NVarChar, data.grade_code);  
+            request.addParameter('grade_name', TYPES.NVarChar , data.grade_name);
+            request.addParameter('grade_description', TYPES.NVarChar , data.grade_description);
             connection.execSql(request);
         });
     },
@@ -42,8 +42,9 @@ module.exports = {
         var connection = new Connection(config);
         
         connection.on('connect', function(err) {
-            request = new Request("SELECT * FROM dbo.Users "+condition+";", function(err, rowCount, rows) {
+            request = new Request("SELECT * FROM dbo.Grade "+condition+";", function(err, rowCount, rows) {
                 if (err) {
+                    console.log(err);
                     callback(-1, err);
                 } else {
                     var rowsResult = new Array();
