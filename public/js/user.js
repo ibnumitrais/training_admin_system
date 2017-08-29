@@ -1,19 +1,22 @@
-$(document).ready(function () {
+// $(document).ready(function () {
     
-    var userTable = userTableInit();
     
-    function updateUserTable(data) {
-        userTable.ajax.reload( null, false );
-        $(".dimmer.usertable").removeClass('active');
-    }
-    $('form.addUser').submit(function (e) {
-        $(".dimmer.usertable").addClass('active');
-        e.preventDefault();
-        $.post('/user-api', {username: $('input[name="username"]').val(), fullname: $('input[name="fullname"]').val(), email: $('input[name="email"]').val()}, updateUserTable);
-        this.reset();
-    });
 
+// });
+
+var userTable = userTableInit();
+
+$('form.addUser').submit(function (e) {
+    $(".dimmer.usertable").addClass('active');
+    e.preventDefault();
+    $.post('/user-api', {username: $('input[name="username"]').val(), fullname: $('input[name="fullname"]').val(), email: $('input[name="email"]').val()}, updateUserTable);
+    this.reset();
 });
+
+function updateUserTable(data) {
+    userTable.ajax.reload( null, false );
+    $(".dimmer.usertable").removeClass('active');
+}
 
 function userTableInit() {
     var table = $('table.usertable').DataTable( {
@@ -31,6 +34,18 @@ function userTableInit() {
             {'data' : 'user_full_name'},
             {'data' : 'user_email'},
             {'data' : 'user_status'},
+            {'data' : null, "defaultContent": ''},
+        ],
+        "columnDefs": [ 
+            {
+                "targets": 4,
+                "createdCell": function(td, cellData, rowData, row, col) {
+                   $(td).prepend(
+                     '<button data-userid="'+rowData.user_id+'" data-header="Delete user #'+rowData.user_id+'" data-modalid="delete-user" data-content="Apakah Anda yakin ingin menghapus User dengan nama '+rowData.user_full_name+'?" onclick="remove(this)" class="ui red tiny icon button"><i class="trash icon"></i></button>'
+                   );
+                },
+                "orderable": false,
+            }
         ]
     } );
     return table;
@@ -57,7 +72,7 @@ function remove(caller) {
             $.ajax({
                 url: '/user-api/' + $(caller).attr('data-userid'),
                 type: 'DELETE',
-                success: printTerms
+                success: updateUserTable
             });
         }
     }).modal('show');

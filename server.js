@@ -19,9 +19,8 @@ app.use(cors());
 app.get("/user-api", function(req, res) {
 	user.getRecords(function(status, data){
 		if(status > 0) {
-			
+			console.log(req.query);
 			var draw 		= req.query.draw;
-			
 			var start 		= req.query.start;
 			var length 		= req.query.length;
 			var searchValue = req.query.search.value;
@@ -58,12 +57,13 @@ app.get("/user-api", function(req, res) {
 				// names must be equal
 				return 0;
 			});
-
+			console.log(data.length);
+			recordsFiltered = data.slice(start, start+length);
 			res.json({
 				"draw": draw,
 				"recordsTotal": parseInt(data.length),
 				"recordsFiltered": parseInt(data.length),
-				"data": data,
+				"data": recordsFiltered,
 			});
 		}
 		else {
@@ -76,17 +76,6 @@ app.post("/user-api", function(req, res) {
 	var filter = req.body.filter;
     user.storeRecord(function(status, message){
 		if(status > 0) {
-			// user.getRecords(function(status, data){
-			// 	if(status > 0) {
-			// 		var active = data.filter(function(item) {
-			// 			return item.user_status == filter;
-			// 		});
-			// 		res.json(active);
-			// 	}
-			// 	else {
-			// 		console.log(data);
-			// 	}
-			// }, '');
 			res.json(1);
 		}
 		else {
@@ -97,6 +86,7 @@ app.post("/user-api", function(req, res) {
 
 app.delete("/user-api/:userid", function(req, res) {
 	var filter = "active    ";
+	
     user.deleteRecord(function(status, message){
 		if(status > 0) {
 			user.getRecords(function(status, data){
