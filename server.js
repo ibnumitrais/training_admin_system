@@ -36,7 +36,6 @@ app.post("/user-api", function(req, res) {
 	var filter = req.body.filter;
     user.storeRecord(function(status, message){
 		if(status > 0) {
-			console.log(status+" success");
 			user.getRecords(function(status, data){
 				if(status > 0) {
 					var active = data.filter(function(item) {
@@ -50,7 +49,6 @@ app.post("/user-api", function(req, res) {
 			}, '');
 		}
 		else {
-			console.log(status+" failed");
 			console.log(message);
 		}
 	}, req.body);

@@ -48,6 +48,7 @@ function remove(caller) {
             currentModal.find('.content').html(headerContent);
         },
         onDeny    : function() {
+            $(".dimmer.usertable").removeClass('active');
             return true;
         },
         onApprove : function() {
