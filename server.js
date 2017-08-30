@@ -55,7 +55,6 @@ app.get("/grade-api", function(req, res) {
 				
 				if (nameA < nameB) return -1;
 				if (nameA > nameB) return 1;
-				// names must be equal
 				return 0;
 			});
 			
@@ -93,7 +92,7 @@ app.get('/users', function (req, res) {
 app.get("/user-api", function(req, res) {
 	user.getRecords(function(status, data){
 		if(status > 0) {
-			console.log(req.query);
+			
 			var draw 		= req.query.draw;
 			var start 		= req.query.start;
 			var length 		= req.query.length;
@@ -126,7 +125,7 @@ app.get("/user-api", function(req, res) {
 				if (nameA > nameB) return 1;
 				return 0;
 			});
-			console.log(data.length);
+			
 			recordsFiltered = data.slice(start, start+length);
 			res.json({
 				"draw": draw,
