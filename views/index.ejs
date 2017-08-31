@@ -1,0 +1,69 @@
+<%- include('views/partials/head', { name : ''}) %>
+<%- include('views/partials/menu', { active : ''}) %>
+
+<div class="ui container" style="padding-top: 7em; padding-bottom: 3em">
+    <h2 class="ui header">
+        <!-- <i class="settings icon"></i> -->
+        <div class="content">
+            PBI Priority 2
+            <div class="sub header">The back end application can be called through browser.</div>
+        </div>
+    </h2>
+    <div class="ui segment pbi2">
+        <form class="ui form">
+            <div class="ui equal width fields">
+                <div class="field">
+                    <label>Host</label>
+                    <input name="pbi2_url" type="text" value="en.wikipedia.org">
+                </div>
+                <div class="field">
+                    <label>Path</label>
+                    <input name="pbi2_path" type="text" value="/wiki/Bill_Gates">
+                </div>
+                <div class="field">
+                    <label style="visibility: hidden">Host</label>
+                    <button class="ui submit green button">Request Data</button>
+                    <div onclick="resetResponse('pbi2')" class="ui submit button">Clear Data</div>
+                </div>
+            </div>
+        </form>
+        <div class="ui segment response">
+            Empty Response
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script>
+
+    var classPrefix = '.pbi2';
+
+    $(classPrefix+' form').submit(function (e) {
+        $(classPrefix+' form').addClass('loading');
+        $(classPrefix+' .response').addClass('loading');
+        e.preventDefault();
+        
+        $.ajax({
+            url: '/requestURL',
+            type: 'POST',
+            data: $(this).serialize(),
+            beforeSend: function(){
+                
+            },
+            success: function(data) {
+                $(classPrefix+' .response').html(data);
+                $(classPrefix+' .response').removeClass('loading');
+
+                $(classPrefix+' form').removeClass('loading');
+            }
+        });
+    });
+
+    function resetResponse(data) {
+        var classPrefix = '.'+data;
+        $(classPrefix+' .response').addClass('loading');
+        $(classPrefix+' .response').html('Empty Response');
+        $(classPrefix+' .response').removeClass('loading');
+    }
+    
+</script>
+<%- include('views/partials/foot', {}) %>
