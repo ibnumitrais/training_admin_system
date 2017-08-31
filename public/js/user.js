@@ -1,11 +1,37 @@
 
+$('.gradeselection').dropdown({
+    apiSettings: {
+        responseAsync: function(settings, callback) {
+            const query = settings.urlData.query;
+        
+            
+            $.get('/grade-api', {}, function(data){
+                var i;
+                for(i = 0; i < data.length; i++){
+                    data[i].name = data[i]['grade_name'];
+                    delete data[i].grade_name;
+
+                    data[i].value = data[i]['grade_id'];
+                    delete data[i].grade_id;
+                    
+                }
+                var response = {
+                    success: true,
+                    results: data
+                };
+                callback(response);
+            });
+            
+        }
+    }
+});
 
 var userTable = userTableInit();
 
 $('form.addUser').submit(function (e) {
     $(".dimmer.usertable").addClass('active');
     e.preventDefault();
-    $.post('/user-api', {username: $('input[name="username"]').val(), fullname: $('input[name="fullname"]').val(), email: $('input[name="email"]').val()}, updateUserTable);
+    $.post('/user-api', $('form.addUser').serialize(), updateUserTable);
     this.reset();
 });
 
@@ -37,9 +63,9 @@ function userTableInit() {
             {
                 "targets": 4,
                 "createdCell": function(td, cellData, rowData, row, col) {
-                $(td).prepend(
-                    '<button data-userid="'+rowData.user_id+'" data-header="Delete user #'+rowData.user_id+'" data-modalid="delete-user" data-content="Apakah Anda yakin ingin menghapus User dengan nama '+rowData.user_full_name+'?" onclick="remove(this)" class="ui red tiny icon button"><i class="trash icon"></i></button>'
-                );
+                    $(td).prepend(
+                        '<button data-userid="'+rowData.user_id+'" data-header="Delete user #'+rowData.user_id+'" data-modalid="delete-user" data-content="Apakah Anda yakin ingin menghapus User dengan nama '+rowData.user_full_name+'?" onclick="remove(this)" class="ui red tiny icon button"><i class="trash icon"></i></button>'
+                    );
                 },
                 "orderable": false,
             }

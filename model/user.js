@@ -28,13 +28,15 @@ module.exports = {
         var connection = new Connection(config);
         connection.on('connect', function(err) {
             request = new Request("INSERT dbo.Users (user_full_name, user_email, user_account_name, user_status, created_at, updated_at, deleted_at, grade_id, division_id, office_id) "+ 
-                                    "VALUES (@Name, @Email, @UserAccount, 'not active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '', 2, 1, 1);", function(err) {
+                                    "VALUES (@Name, @Email, @UserAccount, 'not active', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '', @GradeID, 1, 1);", function(err) {
                 if (err) callback(-1, err);  
                 else callback(1, 'success');
             });
+            
             request.addParameter('Name', TYPES.NVarChar, data.fullname);  
             request.addParameter('UserAccount', TYPES.NVarChar , 'mitrais/'+data.username);
             request.addParameter('Email', TYPES.NVarChar , data.email);
+            request.addParameter('GradeID', TYPES.Int , data.grade_id);
             connection.execSql(request);
         });
     },

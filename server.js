@@ -39,45 +39,49 @@ app.get('/grades', function (req, res) {
 app.get("/grade-api", function(req, res) {
 	grade.getRecords(function(status, data){
 		if(status > 0) {
-			var draw 		= req.query.draw;
-			var start 		= req.query.start;
-			var length 		= req.query.length;
-			var searchValue = req.query.search.value;
-			var searchRegex = req.query.search.regex;
+			if(req.query.draw == undefined)
+				res.json(data);
+			else {
+				var draw 		= req.query.draw;
+				var start 		= req.query.start;
+				var length 		= req.query.length;
+				var searchValue = req.query.search.value;
+				var searchRegex = req.query.search.regex;
 
-			// SEARCH
-			data = data.filter(function(item) {
-				return item.grade_code.indexOf(searchValue) >= 0 
-				|| item.grade_name.indexOf(searchValue) >= 0
-				|| item.grade_description.indexOf(searchValue) >= 0;
-			});
+				// SEARCH
+				data = data.filter(function(item) {
+					return item.grade_code.indexOf(searchValue) >= 0 
+					|| item.grade_name.indexOf(searchValue) >= 0
+					|| item.grade_description.indexOf(searchValue) >= 0;
+				});
 
-			//SORT
-			data.sort(function(a, b) {
-				var orderColumn = req.query.order[0].column;
-				var orderDir 	= req.query.order[0].dir;
-				var orderNameColumn = req.query.columns[orderColumn].data;
+				//SORT
+				data.sort(function(a, b) {
+					var orderColumn = req.query.order[0].column;
+					var orderDir 	= req.query.order[0].dir;
+					var orderNameColumn = req.query.columns[orderColumn].data;
 
-				if(orderDir == 'asc') {
-					var nameA = a[orderNameColumn].toUpperCase(); 
-					var nameB = b[orderNameColumn].toUpperCase(); 
-				} else {
-					var nameB = a[orderNameColumn].toUpperCase(); 
-					var nameA = b[orderNameColumn].toUpperCase(); 
-				}
+					if(orderDir == 'asc') {
+						var nameA = a[orderNameColumn].toUpperCase(); 
+						var nameB = b[orderNameColumn].toUpperCase(); 
+					} else {
+						var nameB = a[orderNameColumn].toUpperCase(); 
+						var nameA = b[orderNameColumn].toUpperCase(); 
+					}
+					
+					if (nameA < nameB) return -1;
+					if (nameA > nameB) return 1;
+					return 0;
+				});
 				
-				if (nameA < nameB) return -1;
-				if (nameA > nameB) return 1;
-				return 0;
-			});
-			
-			recordsFiltered = data.slice(start, start+length);
-			res.json({
-				"draw": draw,
-				"recordsTotal": parseInt(data.length),
-				"recordsFiltered": parseInt(data.length),
-				"data": recordsFiltered,
-			});
+				recordsFiltered = data.slice(start, start+length);
+				res.json({
+					"draw": draw,
+					"recordsTotal": parseInt(data.length),
+					"recordsFiltered": parseInt(data.length),
+					"data": recordsFiltered,
+				});
+			}
 		}
 		else {console.log(data);}
 	}, '');
@@ -206,6 +210,14 @@ http.createServer(function(req, res) {
 				menuName: 'PBI Priority 3 and 4',
 				menuDes: 'NodeJS HTTP Module Serving JSON Data and collecting POST data.',
 			}));
+		} else if(req.url === "/grade-api") {
+			grade.getRecords(function(status, data){
+				if(status > 0) {
+					res.writeHead(200, {"Content-Type": "text/json"});
+					res.end(JSON.stringify(data));
+				}
+				else {console.log(data);}
+			}, '');
 		} else if(req.url.split('?')[0] === "/user-api") {
 			var reqData = qs.parse(req.url.split('?')[1]);
 			
@@ -294,13 +306,11 @@ http.createServer(function(req, res) {
 			});
 			req.on("end", function(chunk) {
 				var dataPost = qs.parse(body);
-				
 				user.storeRecord(function(status, message){
 					if(status > 0) {
 						res.end(JSON.stringify(dataPost));
 					} else res.end(-1);
 				}, dataPost);
-
 			});
 
 			
