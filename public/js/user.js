@@ -20,6 +20,7 @@ function userTableInit() {
         "serverSide": true,
         'ajax': {
             'url': "/user-api",
+            'type': 'GET',
             'data': function(d){
                 return d;
             }

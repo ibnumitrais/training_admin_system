@@ -1,0 +1,66 @@
+<%- include('partials/head', { user: filename , name : menuName}) %>
+<%- include('partials/menu', { active : ''}) %>
+
+<div class="ui container" style="padding-top: 7em; padding-bottom: 3em; min-height: 100vh">
+    <%- include('partials/topsidebar', { size : 'ten', menuDetail: false, iconSize: 'huge', active: menuCode}) %>
+    <h2 class="ui header">
+        <div class="content">
+            <%- menuName %>
+            <div class="sub header"><%- menuDes %></div>
+        </div>
+    </h2>
+    <div class="ui segment">
+        <form class="ui form addUser">
+            <div class="equal width fields">
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Username..." required>
+                </div>
+                <div class="field">
+                    <label>Full Name</label>
+                    <input type="text" name="fullname" placeholder="Full Name..." required>
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="text" name="email" placeholder="Email..." required>
+                </div>
+            </div>
+            <button class="ui right labeled icon tiny green button">
+                <i class="save icon"></i>
+                Simpan
+            </button>
+        </form>
+    </div>
+    <div class="dimmable">
+        <div class="ui inverted dimmer usertable">
+            <div class="ui text loader">Loading</div>
+        </div>
+        <table class="ui celled striped table usertable">
+            
+            <thead>
+                <tr>
+                    <th class="center aligned">Account Name</th>
+                    <th class="center aligned">Full Name</th>
+                    <th class="center aligned">Email</th>
+                    <th class="center aligned">Status</th>
+                    <th class="center aligned">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="ui mini modal delete" id="delete-grade">
+    <div class="header"></div>
+    <div class="content">
+    </div>
+    <div class="actions">
+        <div class="ui approve red button">Yes!</div>
+        <div class="ui cancel button">No</div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<%- include('partials/script', {}) %>
+<script src="/js/user.js"></script>
+<%- include('partials/foot', {}) %>

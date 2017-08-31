@@ -1,0 +1,69 @@
+<div class="ui segment">
+    <div class="ui <%- size %> cards">
+        <a data-tooltip="Dashboard" href="/" class="<% if(active == 'dashboard') { %>green<% } else { %>grey<% } %> card">
+            <div class="image center aligned" style="padding: 1em">
+                <i class="<%- iconSize %> dashboard <% if(active == 'dashboard') { %>green<% } else { %>grey<% } %> icon"></i>
+            </div>
+            <% if(menuDetail) { %>
+            <div class="content">
+                <div class="header">Dashboard</div>
+                <div class="description">
+                    Dashboard for all users.
+                </div>
+            </div>
+            <% } %>
+        </a>
+        <a data-tooltip="Request" href="http://localhost:3001/request" class="<% if(active == 'request') { %>green<% } else { %>grey<% } %> card">
+            <div class="image center aligned" style="padding: 1em">
+                <i class="<%- iconSize %> handshake <% if(active == 'request') { %>green<% } else { %>grey<% } %> icon"></i>
+            </div>
+            <% if(menuDetail) { %>
+            <div class="content">
+                <div class="header">Request</div>
+                <div class="description">
+                    [PBI 2]
+                </div>
+            </div>
+            <% } %>
+        </a>
+        <a data-tooltip="Show and Post data" href="http://localhost:3001/form" class="<% if(active == 'form') { %>green<% } else { %>grey<% } %> card">
+            <div class="image center aligned" style="padding: 1em">
+                <i class="<%- iconSize %> newspaper <% if(active == 'form') { %>green<% } else { %>grey<% } %> icon"></i>
+            </div>
+            <% if(menuDetail) { %>
+            <div class="content">
+                <div class="header">Show and Post data</div>
+                <div class="description">
+                    [PBI 3, PBI 4]
+                </div>
+            </div>
+            <% } %>
+        </a>
+        <a data-tooltip="[Exprerss] Users" href="http://localhost:3000/users" class="<% if(active == 'users') { %>green<% } else { %>grey<% } %> card">
+            <div class="image center aligned" style="padding: 1em">
+                <i class="<%- iconSize %> users <% if(active == 'users') { %>green<% } else { %>grey<% } %> icon"></i>
+            </div>
+            <% if(menuDetail) { %>
+            <div class="content">
+                <div class="header">[Exprerss] Users</div>
+                <div class="description">
+                    [PBI 6, PBI 5]
+                </div>
+            </div>
+            <% } %>
+        </a>
+        <a data-tooltip="[Exprerss] Grade" href="http://localhost:3000/grades" class="<% if(active == 'grades') { %>green<% } else { %>grey<% } %> card">
+            <div class="image center aligned" style="padding: 1em">
+                <i class="<%- iconSize %> database <% if(active == 'grades') { %>green<% } else { %>grey<% } %> icon"></i>
+            </div>
+            <% if(menuDetail) { %>
+            <div class="content">
+                <div class="header">[Exprerss] Grade</div>
+                <div class="description">
+                    [PBI 6, PBI 5]
+                </div>
+            </div>
+            <% } %>
+        </a>
+    </div>
+</div>

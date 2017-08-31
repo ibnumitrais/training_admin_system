@@ -11,13 +11,30 @@ app.use(function(req, res, next) {next();});
 app.use(express.static("./public"));
 app.use(cors());
 
+app.set('view engine', 'ejs');
+
 //MODEL
 var user = require("./model/user");
 var grade = require("./model/grade");
 
 //GRADES ROUTE
+app.get('/', function (req, res) {
+	res.render('index', {
+		filename: 'index.ejs',
+		menuCode: 'dashboard',
+		menuName: 'Dashboard',
+		menuDes: 'Dashboard for all users',
+	});
+})
+
 app.get('/grades', function (req, res) {
-	fs.createReadStream("./views/grade.html", "UTF-8").pipe(res);
+	res.render('grade', {
+		filename: 'grade.ejs',
+		menuCode: 'grades',
+		menuName: '[Exprerss] Grade',
+		menuDes: '[PBI 6, PBI 5]',
+	});
+	// fs.createReadStream("./views/grade.html", "UTF-8").pipe(res);
 })
 app.get("/grade-api", function(req, res) {
 	grade.getRecords(function(status, data){
@@ -80,9 +97,16 @@ app.delete("/grade-api/:id", function(req, res) {
 
 //USER ROUTE
 app.get('/users', function (req, res) {
-	fs.createReadStream("./views/user.html", "UTF-8").pipe(res);
+	res.render('user', {
+		filename: 'user.ejs',
+		menuCode: 'users',
+		menuName: '[Exprerss] User',
+		menuDes: '[PBI 6, PBI 5]',
+	});
+	// fs.createReadStream("./views/user.html", "UTF-8").pipe(res);
 })
 app.get("/user-api", function(req, res) {
+	
 	user.getRecords(function(status, data){
 		if(status > 0) {
 			var draw 		= req.query.draw;
@@ -161,8 +185,42 @@ http.createServer(function(req, res) {
         if (req.url === "/") {
 			res.writeHead(200, {"Content-Type": "text/html"});
 			res.end(ejs.render(fs.readFileSync('./views/index.ejs', 'utf8'), { 
-				filename: 'index.ejs'
+				filename: './views/index.ejs',
+				menuCode: 'dashboard',
+				menuName: 'Dashboard',
+				menuDes: 'Dashboard for all users',
 			}));
+		} else if(req.url === "/request") {
+			res.writeHead(200, {"Content-Type": "text/html"});
+			res.end(ejs.render(fs.readFileSync('./views/noexpress/request.ejs', 'utf8'), { 
+				filename: './views/index.ejs',
+				menuCode: 'request',
+				menuName: 'PBI Priority 2',
+				menuDes: 'The back end application can be called through browser.',
+			}));
+		} else if(req.url === "/form") {
+			res.writeHead(200, {"Content-Type": "text/html"});
+			res.end(ejs.render(fs.readFileSync('./views/noexpress/form.ejs', 'utf8'), { 
+				filename: './views/index.ejs',
+				menuCode: 'form',
+				menuName: 'PBI Priority 3 and 4',
+				menuDes: 'NodeJS HTTP Module Serving JSON Data and collecting POST data.',
+			}));
+		} else if(req.url.split('?')[0] === "/user-api") {
+			var reqData = qs.parse(req.url.split('?')[1]);
+			
+			user.getRecords(function(status, data){
+				if(status > 0) {
+					// FILTER
+					data = data.filter(function(item) {
+						return item.user_status == reqData.filter;
+					});
+					
+					res.writeHead(200, {"Content-Type": "text/plain"});
+					res.end(JSON.stringify({ data: data}));
+				}
+				else {console.log(data);}
+			}, '');
 		} else {
 			// READ the assets
             fs.readFile('./public' + req.url, function(err, data) {
@@ -193,9 +251,9 @@ http.createServer(function(req, res) {
                 }
             });
         }
-    }
-    else if(req.method === "POST") {
-       if(req.url === '/requestURL') {
+    } else if(req.method === "POST") {
+       	if(req.url === '/requestURL') {
+
 			var body = "";
 			req.on("data", function(chunk) {
 				body += chunk;
@@ -228,7 +286,26 @@ http.createServer(function(req, res) {
 				
 				urlReq.end();
 			});
-        }
+        } else if(req.url === "/user-api") {
+			// var reqData = qs.parse(req.url.split('?')[1]);
+			var body = "";
+			req.on("data", function(chunk) {
+				body += chunk;
+			});
+			req.on("end", function(chunk) {
+				var dataPost = qs.parse(body);
+				
+				user.storeRecord(function(status, message){
+					if(status > 0) {
+						res.end(JSON.stringify(dataPost));
+					} else res.end(-1);
+				}, dataPost);
+
+			});
+
+			
+			
+		}
     }
 
 }).listen(3001);

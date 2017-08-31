@@ -5,9 +5,11 @@
     <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no"/>
     <meta charset="utf-8">
 
-    <title><%- name %> Thor Team</title>
+    <title><% if(menuName != '') { %><%- menuName+' |' %><% } %> Thor Team</title>
     <link rel="stylesheet" href="/semantic/semantic.min.css">
     <link rel="stylesheet" href="/datatables/semanticui.min.css">
+    <link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    
 </head>
 <body>

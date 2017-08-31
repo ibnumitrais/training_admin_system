@@ -1,0 +1,153 @@
+<%- include('partials/head', { name : menuName}) %>
+<%- include('partials/menu', { active : ''}) %>
+
+<div class="ui container" style="padding-top: 7em; padding-bottom: 3em; min-height: 100vh">
+    <%- include('partials/topsidebar', { size : 'ten', menuDetail: false, iconSize: 'huge', active: menuCode}) %>
+    <h2 class="ui header">
+        <div class="content">
+            <%- menuName %>
+            <div class="sub header"><%- menuDes %></div>
+        </div>
+    </h2>
+    <div class="ui segment pbi3">
+        
+                <form class="ui form addUser">
+                    <div class="equal width fields">
+                        <div class="field">
+                            <label>Username</label>
+                            <input type="text" name="username" placeholder="Username..." required>
+                        </div>
+                        <div class="field">
+                            <label>Full Name</label>
+                            <input type="text" name="fullname" placeholder="Full Name..." required>
+                        </div>
+                        <div class="field">
+                            <label>Email</label>
+                            <input type="text" name="email" placeholder="Email..." required>
+                        </div>
+                    </div>
+                    <button class="ui right labeled icon tiny green button">
+                        <i class="save icon"></i>
+                        Simpan
+                    </button>
+                </form>
+        <div class="ui segment">
+            <div class="dimmable">
+                <div class="ui inverted dimmer usertable">
+                    <div class="ui text loader">Loading</div>
+                </div>
+                <table class="ui celled striped table no-margin usertablerecent">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="ui segment response">
+            <div class="dimmable">
+                <div class="ui form">
+                    <div class="equal width fields">
+                        <div class="field">
+                            <select class="ui dropdown filter">
+                                <option value="active    " selected>Active User</option>
+                                <option value="not active">Inactive User</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui inverted dimmer usertable">
+                    <div class="ui text loader">Loading</div>
+                </div>
+                <table class="ui celled striped table usertable">
+                    <thead>
+                        <tr>
+                            <th class="center aligned">Account Name</th>
+                            <th class="center aligned">Full Name</th>
+                            <th class="center aligned">Email</th>
+                            <th class="center aligned">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<%- include('partials/script', {}) %>
+<script>
+
+var userTable = userTableInit();
+$('.dropdown.filter').dropdown({
+    onChange: function(value, text, $choice) {
+        updateUserTable();
+    },
+});
+
+$('form.addUser').submit(function (e) {
+    $(".dimmer.usertable").addClass('active');
+    $(".dimmer.usertablerecent").addClass('active');
+    e.preventDefault();
+    $.post('/user-api', {username: $('input[name="username"]').val(), fullname: $('input[name="fullname"]').val(), email: $('input[name="email"]').val()}, updateUserTable);
+    this.reset();
+});
+
+function updateUserTable(data) {
+    userTable.ajax.reload( null, false );
+    if(data)
+        $('<tr><td>').text(data).appendTo($(".usertablerecent tbody"));
+
+    $(".dimmer.usertable").removeClass('active');
+    $(".dimmer.usertablerecent").removeClass('active');
+}
+
+function userTableInit() {
+    var table = $('table.usertable').DataTable( {
+        "processing": true,
+        'ajax': {
+            'url': "/user-api",
+            'method': 'GET',
+            'data': function(d){
+                d.filter = $('.dropdown.filter').dropdown('get value');
+                return d;
+            }
+        },
+        'columns': [
+            {'data' : 'user_account_name'},
+            {'data' : 'user_full_name'},
+            {'data' : 'user_email'},
+            {'data' : 'user_status'},
+        ]
+    } );
+    return table;
+}
+
+function remove(caller) {
+    $(".dimmer.usertable").addClass('active');
+    var currentModal = $('#' + $(caller).attr('data-modalid'));
+
+    currentModal.modal({
+        closable  : false,
+        onShow    : function() {
+            var headerText      = $(caller).attr('data-header');
+            var headerContent   = $(caller).attr('data-content');
+
+            currentModal.find('.header').html(headerText);
+            currentModal.find('.content').html(headerContent);
+        },
+        onDeny    : function() {
+            $(".dimmer.usertable").removeClass('active');
+            return true;
+        },
+        onApprove : function() {
+            $.ajax({
+                url: 'http://localhost:3000/user-api/' + $(caller).attr('data-userid'),
+                type: 'DELETE',
+                success: updateUserTable
+            });
+        }
+    }).modal('show');
+}
+
+</script>
+<%- include('partials/foot', {}) %>

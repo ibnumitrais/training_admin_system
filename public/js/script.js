@@ -1,0 +1,1 @@
+$('.dropdown:not(.custom)').dropdown();
