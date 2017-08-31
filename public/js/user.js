@@ -49,9 +49,10 @@ function userTableInit() {
 }
 
 function remove(caller) {
+    
     $(".dimmer.usertable").addClass('active');
     var currentModal = $('#' + $(caller).attr('data-modalid'));
-
+    
     currentModal.modal({
         closable  : false,
         onShow    : function() {

@@ -92,7 +92,7 @@ app.delete("/grade-api/:id", function(req, res) {
     grade.deleteRecord(function(status, message){
 		if(status > 0) res.json(1);
 		else res.json(-1);
-	}, req.param("id"));
+	}, req.params.id);
 });
 
 //USER ROUTE
@@ -163,7 +163,7 @@ app.delete("/user-api/:userid", function(req, res) {
     user.deleteRecord(function(status, message){
 		if(status > 0) res.json(1);
 		else res.json(-1);
-	}, req.param("userid"));
+	}, req.params.userid);
 });
 app.listen(3000);
 console.log("Express app running on port 3000");
