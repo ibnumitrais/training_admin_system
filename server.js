@@ -169,8 +169,8 @@ app.delete("/user-api/:userid", function(req, res) {
 		else res.json(-1);
 	}, req.params.userid);
 });
-app.listen(3000);
-console.log("Express app running on port 3000");
+app.listen(3002);
+console.log("Express app running on port 3002");
 module.exports = app;
 //===========================> END EXPRESS
 ////////////////////////////
